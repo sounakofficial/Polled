@@ -1,5 +1,3 @@
-
-import { prisma } from '../db/client'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { trpc } from '../utils/trpc'
@@ -11,12 +9,3 @@ const Home: NextPage = (props:any) => {
 }
 
 export default Home
-
-export const getServerSideProps = async () => {
-  const questions = await prisma.pollQuestion.findMany()
-  return {
-    props: {
-      questions: JSON.stringify(questions),
-    }
-  }
-}

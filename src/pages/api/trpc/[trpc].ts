@@ -1,9 +1,13 @@
+import { prisma } from '../../../db/client';
 import * as trpc from '@trpc/server';
 import * as trpcNext from '@trpc/server/adapters/next';
 import { z } from 'zod';
+ import superjson from 'superjson';
+
 
 export const appRouter = trpc
   .router()
+  .transformer(superjson)
   .query('hello', {
     input: z
       .object({
@@ -15,7 +19,12 @@ export const appRouter = trpc
         greeting: `hello ${input?.text ?? 'world'}`,
       };
     },
-  });
+  }).query("GetAllQuestions",{
+    async resolve(){
+        return await prisma.pollQuestion.findMany();
+    }
+  })
+  ;
 
 // export type definition of API
 export type AppRouter = typeof appRouter;
@@ -24,4 +33,4 @@ export type AppRouter = typeof appRouter;
 export default trpcNext.createNextApiHandler({
   router: appRouter,
   createContext: () => null,
-});
+}); 
