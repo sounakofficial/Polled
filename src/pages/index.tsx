@@ -1,7 +1,9 @@
+
+import { prisma } from '../db/client'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 
-const Home: NextPage = () => {
+const Home: NextPage = (props:any) => {
   return (
     <div>
       <Head>
@@ -12,7 +14,7 @@ const Home: NextPage = () => {
 
       <main>
         <h1 className="text-2xl font-bold">
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
+         { props.questions }
         </h1>
       </main>
     </div>
@@ -20,3 +22,12 @@ const Home: NextPage = () => {
 }
 
 export default Home
+
+export const getServerSideProps = async () => {
+  const questions = await prisma.pollQuestion.findMany()
+  return {
+    props: {
+      questions: JSON.stringify(questions),
+    }
+  }
+}
