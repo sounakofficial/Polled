@@ -1,6 +1,6 @@
 import { withTRPC } from '@trpc/next';
 import { AppType } from 'next/dist/shared/lib/utils';
-import { AppRouter } from './api/trpc/[trpc]';
+import { AppRouter } from '../backend/router';
 import superjson from 'superjson';
 
 const MyApp: AppType = ({ Component, pageProps }) => {
@@ -15,7 +15,7 @@ export default withTRPC<AppRouter>({
      */
     const url = process.env.VERCEL_URL
       ? `https://${process.env.VERCEL_URL}/api/trpc`
-      : 'https://localhost:3000/api/trpc';
+      : 'http://localhost:3000/api/trpc';
 
     return {
       url,
